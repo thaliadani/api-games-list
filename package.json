@@ -1,0 +1,25 @@
+{
+  "name": "games-list",
+  "version": "1.0.0",
+  "main": "server.cjs",
+  "type": "module",
+  "scripts": {
+    "start:watch": "tsx --env-file=.env --watch src/server.ts",
+    "start:dev": "tsx --env-file=.env src/server.ts",
+    "dist": "tsup src/server.ts --out-dir dist",
+    "start": "tsup src/server.ts --out-dir dist && node dist/server.cjs"
+  },
+  "keywords": [],
+  "author": "Thalia Danielle",
+  "license": "ISC",
+  "description": "Lista de jogos",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
