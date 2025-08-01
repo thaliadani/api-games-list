@@ -43,6 +43,7 @@ export const createGameService = async (game: GameModel) => {
     return response;
 }
 
+
 export const updateGameService = async (id: number, descriptions: DescriptionModel) => {
     const data = await gameData.findAndModifyDescriptionGame(id, descriptions);
     

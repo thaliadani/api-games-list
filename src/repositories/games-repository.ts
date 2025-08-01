@@ -1,54 +1,42 @@
 import { DescriptionModel } from "../models/descriptions-model";
 import { GameModel } from "../models/games-model";
+import fs from "fs/promises";
 
-const database: GameModel[] = [
-    {
-        id: 1,
-        name: 'Fifa 2022',
-        descriptions: {
-            releaseDate: 2004,
-            plataform: 'PS5',
-            price: 100,
-        },
-    },
-    {
-        id: 2,
-        name: 'Fifa 2022',
-        descriptions: {
-            releaseDate: 2004,
-            plataform: 'XBOX',
-            price: 100
-        },
-    }
-
-]
 
 export const findAllGames = async (): Promise<GameModel[]> => {
-    return database;
+    const data = await fs.readFile("./src/data/games.json", "utf-8");
+    return JSON.parse(data) as GameModel[];
 }
 
 export const findGameById = async (id: number): Promise<GameModel | undefined> => {
-    return database.find((game) => game.id === id);
+    const games = await findAllGames();
+    return games.find((game) => game.id === id);
 }
 
-export const insertGame = async (game: GameModel) => {
-    database.push(game);
+export const insertGame = async (game: GameModel): Promise<void> => {
+    const games = await findAllGames();
+    games.push(game);
+    await fs.writeFile("./src/data/games.json", JSON.stringify(games));
 }
 
 export const findAndModifyDescriptionGame = async (id: number, descriptions: DescriptionModel): Promise<GameModel> => {
-    const gameIndex = database.findIndex((g) => g.id === id);
-    
-    if (gameIndex !== -1) {
-        database[gameIndex].descriptions = descriptions;
+    const games = await findAllGames();
+    const index = games.findIndex((g) => g.id === id);
+
+    if (index !== -1) {
+        games[index].descriptions = descriptions;
+        await fs.writeFile("./src/data/games.json", JSON.stringify(games));
     }
 
-    return database[gameIndex];
+    return games[index];
 }
 
-export const deleteGameById = async (id: number) => {
-    const index = database.findIndex((g) => g.id === id);
+export const deleteGameById = async (id: number): Promise<boolean> => {
+    const games = await findAllGames();
+    const index = games.findIndex((g) => g.id === id);
     if (index !== -1) {
-        database.splice(index, 1);
+        games.splice(index, 1);
+        await fs.writeFile("./src/data/games.json", JSON.stringify(games));
         return true;
     }
 

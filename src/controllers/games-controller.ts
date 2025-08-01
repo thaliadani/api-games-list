@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as service from '../services/games-service';
 import { DescriptionModel } from '../models/descriptions-model';
-export const getGame = async (request: Request, response: Response) => {
+export const getGames = async (request: Request, response: Response) => {
     const httpResponse = await service.getGameService();
 
     response.status(httpResponse.statusCode).json(httpResponse.body);
@@ -13,7 +13,7 @@ export const getGameById = async (request: Request, response: Response) => {
     response.status(httpResponse.statusCode).json(httpResponse.body);
 }
 
-export const postGame = async (request: Request, response: Response) => {
+export const createGame = async (request: Request, response: Response) => {
     const bodyValue = request.body;
     const httpResponse = await service.createGameService(bodyValue);
 
